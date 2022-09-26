@@ -1,0 +1,26 @@
+syntax = "proto3";
+
+package api;
+
+option go_package = "github.com/Alexander021192/just-for-fun/pkg/api";
+
+import "google/api/annotations.proto";
+
+service api {
+
+    //Adder
+    rpc Adder (AddRequest) returns (AddResponce) {
+        option (google.api.http) = {
+            get: "/api/add"
+        };
+    }
+}
+
+message AddRequest {
+    int32 x = 1;
+    int32 y = 2;
+}
+
+message AddResponce {
+    int32 res = 1;
+}
