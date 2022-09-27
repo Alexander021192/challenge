@@ -5,14 +5,13 @@ import (
 	"net"
 
 	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/adder"
-	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/api"
 	"google.golang.org/grpc"
 )
 
 func main() {
 	s := grpc.NewServer()
 	srv := &adder.GRPCServer{}
-	s.RegisterService(&grpc.ServiceDesc{}, srv)
+	// api.RegisterService(&grpc.ServiceDesc{}, srv)
 	lis, err := net.Listen("tcp", ":8080")
 	if err != nil {
 		log.Fatal(err)
