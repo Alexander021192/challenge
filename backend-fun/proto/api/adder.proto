@@ -2,9 +2,10 @@ syntax = "proto3";
 
 package api;
 
-option go_package = "github.com/Alexander021192/just-for-fun/pkg/api";
+// option go_package = "github.com/Alexander021192/just-for-fun/pkg";
+option go_package = "./api";
 
-import "google/api/annotations.proto";
+import "proto/google/api/annotation.proto";
 
 service api {
 

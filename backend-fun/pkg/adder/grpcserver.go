@@ -3,7 +3,7 @@ package adder
 import (
 	"context"
 
-	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/api/api"
+	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/api"
 )
 
 // GRPCServer...

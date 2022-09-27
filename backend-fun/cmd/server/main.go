@@ -5,6 +5,7 @@ import (
 	"net"
 
 	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/adder"
+	"github.com/Alexander021192/just-for-fun/backend-fun/pkg/api"
 	"google.golang.org/grpc"
 )
 

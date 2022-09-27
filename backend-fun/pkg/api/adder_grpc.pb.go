@@ -2,7 +2,7 @@
 // versions:
 // - protoc-gen-go-grpc v1.2.0
 // - protoc             v3.19.4
-// source: api/adder.proto
+// source: proto/api/adder.proto
 
 package api
 
@@ -103,5 +103,5 @@ var Api_ServiceDesc = grpc.ServiceDesc{
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
-	Metadata: "api/adder.proto",
+	Metadata: "proto/api/adder.proto",
 }
