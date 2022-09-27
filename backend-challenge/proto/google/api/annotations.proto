@@ -1,10 +1,4 @@
-// This file was downloaded by mimir release-20220912. DO NOT EDIT.
-// Original file location:
-// 	Repository: gitlab.ozon.ru/platform/fork-googleapis
-// 	Filepath: google/api/annotations.proto
-// 	Version: master
-
-// Copyright 2015 Google LLC
+// Copyright (c) 2015, Google Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
