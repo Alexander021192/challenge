@@ -1,0 +1,6 @@
+GET http://localhost:8081/echo/1234
+content-type: application/json
+
+{
+    "msg" : "Hello BROтельник!"
+}

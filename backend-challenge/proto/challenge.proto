@@ -4,13 +4,19 @@ package main;
 
 option go_package="/challenge";
 
+import "google/api/annotations.proto";
+
 service TestApi {
-    rpc Echo(TestResponse) returns (TestResponse) {}
+    rpc Echo(TestResponse) returns (TestResponse) {
+        option (google.api.http) = {
+            get: "/echo/{id}"
+        };
+    }
     rpc GetUser(UserRequest) returns (UserResponse) {}
 }
 
 message TestResponse {
-    string msg = 1;
+    int32 id = 1;
 }
 
 message UserRequest {
