@@ -1,14 +1,8 @@
+create:
+		protoc --proto_path=proto proto/*.proto --go_out=gen/proto/
+		protoc --proto_path=proto proto/*.proto --go-grpc_out=gen/proto/
+
 clean:
-	rm proto/challenge/*.go
-	rm proto/challenge/*.json
+	rm gen/proto/*.go
 
-generate:
-	buf generate --path ./proto/challenge/challenge.proto
-
-install:
-	go get \
-		github.com/bufbuild/buf/cmd/buf \
-		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-grpc-gateway \
-		github.com/grpc-ecosystem/grpc-gateway/v2/protoc-gen-openapiv2 \
-		google.golang.org/grpc/cmd/protoc-gen-go-grpc \
-		google.golang.org/protobuf/cmd/protoc-gen-go
+# export PATH="$PATH:$(go env GOPATH)/bin"
