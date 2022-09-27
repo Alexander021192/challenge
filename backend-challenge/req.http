@@ -1,6 +1,7 @@
-GET http://localhost:8081/echo/1234
+POST http://localhost:8081/echo
 content-type: application/json
 
 {
+    "id" : 445,
     "msg" : "Hello BROтельник!"
 }

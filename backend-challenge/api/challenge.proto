@@ -1,6 +1,6 @@
 syntax="proto3";
 
-package main;
+package challenge;
 
 option go_package="/challenge";
 
@@ -9,7 +9,8 @@ import "google/api/annotations.proto";
 service TestApi {
     rpc Echo(TestResponse) returns (TestResponse) {
         option (google.api.http) = {
-            get: "/echo/{id}"
+            post: "/echo"
+            body: "*"
         };
     }
     rpc GetUser(UserRequest) returns (UserResponse) {}
@@ -17,6 +18,7 @@ service TestApi {
 
 message TestResponse {
     int32 id = 1;
+    string msg = 2;
 }
 
 message UserRequest {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	pb "github.com/Alexander021192/challenge/backend-challenge/gen/proto/challenge"
+	pb "github.com/Alexander021192/challenge/backend-challenge/pkg"
 	"google.golang.org/grpc"
 )
 
@@ -17,11 +17,11 @@ func main() {
 
 	client := pb.NewTestApiClient(conn)
 
-	resp, err := client.Echo(context.Background(), &pb.TestResponse{Msg: "Hello!BRO"})
+	resp, err := client.Echo(context.Background(), &pb.TestResponse{Id: 123})
 	if err != nil {
 		log.Println(err)
 	}
 
 	fmt.Println(resp)
-	fmt.Println(resp.Msg)
+	fmt.Println(resp.Id)
 }
