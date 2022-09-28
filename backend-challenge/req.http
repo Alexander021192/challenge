@@ -1,7 +1,7 @@
-POST http://localhost:8080/echo
-content-type: application/json
+GET http://localhost:8080/echo
+# content-type: application/json
 
-{
-    "id" : 445,
-    "msg" : "Hello BROтельник!"
-}
+# {
+#     "id" : 445,
+#     "msg" : "Hello BROтельник!"
+# }

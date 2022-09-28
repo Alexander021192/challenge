@@ -9,8 +9,8 @@ import "google/api/annotations.proto";
 service TestApi {
     rpc Echo(TestResponse) returns (TestResponse) {
         option (google.api.http) = {
-            post: "/echo"
-            body: "*"
+            get: "/echo"
+            // body: "*"
         };
     }
     rpc GetUser(UserRequest) returns (UserResponse) {}

@@ -8,6 +8,7 @@ import (
 
 	pb "github.com/Alexander021192/challenge/backend-challenge/pkg"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
+	"github.com/rs/cors"
 
 	challengeservice "github.com/Alexander021192/challenge/backend-challenge/internal/app"
 )
@@ -35,15 +36,19 @@ func main() {
 	// new TestServer
 	testApiServer := challengeservice.NewTestApiServer()
 
-	// test 
+	// test
 	fmt.Println(testApiServer.Echo(context.Background(), &pb.TestResponse{}))
 	fmt.Println(testApiServer.GetUser(context.Background(), &pb.UserRequest{Uuid: "testGetUser"}))
 
 	//register
 	pb.RegisterTestApiHandlerServer(context.Background(), mux, testApiServer)
 	// // http server
-	log.Fatalln(http.ListenAndServe("localhost:8080", mux))
 
+	// cors.Default() setup the middleware with default options being
+	// all origins accepted with simple methods (GET, POST).
+	handler := cors.Default().Handler(mux)
+
+	log.Fatalln(http.ListenAndServe("localhost:8080", handler))
 
 	// Starting gRPC server
 	// listner, err := net.Listen("tcp", "localhost:8080")

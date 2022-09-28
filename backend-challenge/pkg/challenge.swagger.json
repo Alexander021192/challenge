@@ -17,7 +17,7 @@
   ],
   "paths": {
     "/echo": {
-      "post": {
+      "get": {
         "operationId": "TestApi_Echo",
         "responses": {
           "200": {
@@ -35,12 +35,17 @@
         },
         "parameters": [
           {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": {
-              "$ref": "#/definitions/challengeTestResponse"
-            }
+            "name": "id",
+            "in": "query",
+            "required": false,
+            "type": "integer",
+            "format": "int32"
+          },
+          {
+            "name": "msg",
+            "in": "query",
+            "required": false,
+            "type": "string"
           }
         ],
         "tags": [
