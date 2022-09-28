@@ -2,15 +2,14 @@ package main
 
 import (
 	"context"
+	"fmt"
 	"log"
-	"net"
 	"net/http"
 
 	pb "github.com/Alexander021192/challenge/backend-challenge/pkg"
 	"github.com/grpc-ecosystem/grpc-gateway/v2/runtime"
-	"google.golang.org/grpc"
 
-	challenge "github.com/Alexander021192/challenge/backend-challenge/internal/pkg"
+	challengeservice "github.com/Alexander021192/challenge/backend-challenge/internal/app"
 )
 
 // type testApiServer struct {
@@ -28,30 +27,36 @@ import (
 // }
 
 func main() {
-	go func() {
-		// mux
-		mux := runtime.NewServeMux()
 
-		// new TestServer
-		testApiServer := challenge.NewTestApiServer()
+	// Start HTTP server
+	// mux
+	mux := runtime.NewServeMux()
 
-		//register
-		pb.RegisterTestApiHandlerServer(context.Background(), mux, testApiServer)
-		// // http server
-		log.Fatalln(http.ListenAndServe("localhost:8081", mux))
-	}()
+	// new TestServer
+	testApiServer := challengeservice.NewTestApiServer()
 
-	listner, err := net.Listen("tcp", "localhost:8080")
-	if err != nil {
-		log.Fatalln(err)
-	}
+	// test 
+	fmt.Println(testApiServer.Echo(context.Background(), &pb.TestResponse{}))
+	fmt.Println(testApiServer.GetUser(context.Background(), &pb.UserRequest{Uuid: "testGetUser"}))
 
-	grpcServer := grpc.NewServer()
-	pb.RegisterTestApiServer(grpcServer, challenge.NewTestApiServer())
+	//register
+	pb.RegisterTestApiHandlerServer(context.Background(), mux, testApiServer)
+	// // http server
+	log.Fatalln(http.ListenAndServe("localhost:8080", mux))
 
-	err = grpcServer.Serve(listner)
-	if err != nil {
-		log.Println(err)
-	}
+
+	// Starting gRPC server
+	// listner, err := net.Listen("tcp", "localhost:8080")
+	// if err != nil {
+	// 	log.Fatalln(err)
+	// }
+
+	// grpcServer := grpc.NewServer()
+	// pb.RegisterTestApiServer(grpcServer, challenge.NewTestApiServer())
+
+	// err = grpcServer.Serve(listner)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 
 }
