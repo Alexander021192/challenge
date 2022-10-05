@@ -1,4 +1,4 @@
-# front-fun
+# front-challenge
 
 ## Build Setup
 
