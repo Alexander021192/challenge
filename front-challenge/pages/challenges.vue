@@ -1,30 +1,34 @@
 <template>
     <div class="container mx-auto mt-8">
-        <Challenge 
-            v-for="mountain in mountains" 
-            :product="mountain" 
-            :key="mountain.title"
-            class="mb-4"
-        />
+        <NuxtLink to="/">Home</NuxtLink>
+        <button
+            v-if="!show"
+            class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
+            @click="showData"
+        >
+            Show Data
+        </button>
+        <button
+            v-if="show"
+            class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
+            @click="showData"
+        >
+            Hide Data
+        </button>
+        <LazyItemsChallenge v-if="show"/>
     </div>
 </template>
-
 <script>
 export default {
-    async fetch() {
-        this.mountains = await fetch(
-            'https://api.nuxtjs.dev/mountains'
-        ).then((res) => res.json())
-    },
     data() {
         return {
-            mountains: []
+            show: false
+        }
+    },
+    methods: {
+        showData() {
+            this.show = !this.show
         }
     }
 }
 </script>
-<style lang="postcss">
-img {
-    height: 120px;
-}
-</style>
