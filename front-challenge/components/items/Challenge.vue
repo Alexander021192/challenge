@@ -42,6 +42,7 @@
 <script>
 
 export default {
+    name: 'ChallengeItem',
     data() {
         return {
             mountains: []
@@ -55,9 +56,10 @@ export default {
 }
 </script>
 
-<style lang="postcss">
+<style scoped>
 img {
     height: 200px;
+    object-fit: cover;
 }
 
 .item {
