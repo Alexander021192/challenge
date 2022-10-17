@@ -6,13 +6,16 @@
         >
             Refresh
         </button>
+        
         <p v-if="$fetchState.pending">Fetching mountains...</p>
-        <p v-else-if="$fetchState.error">An error occurred</p>
+        <div v-if="mountains.message">
+            <ErrorPage :msg="mountains.message"/>
+        </div>
+        <!-- <p v-if="mountains.message">An error occurred {{mountains.message}}</p> -->
         <div 
             v-for="mountain in mountains" 
             v-else
             :key="mountain.title"
-
             class="item md:flex"
         >
             <div class="md:flex-shrink-0">
@@ -40,9 +43,11 @@
 </template>
 
 <script>
+import ErrorPage from '../ErrorPage.vue'
 
 export default {
     name: 'ChallengeItem',
+    components: { ErrorPage },
     data() {
         return {
             mountains: []
@@ -50,8 +55,9 @@ export default {
     },
     async fetch() {
         this.mountains = await fetch(
-            'https://api.nuxtjs.dev/mountains'
+            'https://api.nuxtjs.dev/mountains/ad'
         ).then((res) => res.json())
+        
     },
 }
 </script>
