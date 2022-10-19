@@ -42,9 +42,10 @@
                         <li><span class="font-bold">Height</span>: {{mountain.height}}</li>
                         <li><span class="font-bold">Country</span>: <span v-for="country in mountain.countries" :key="country">{{country}}</span></li>
                     </ul>
-                    <p class="text-xl">
+                    <p class="text-xl mb-10">
                         {{mountain.description}}
                     </p>
+                    <Comments />
                 </div>
             </div>
         </div>
@@ -52,7 +53,9 @@
 </template>
 
 <script>
+import Comments from '../components/Comments.vue'
   export default {
+  components: { Comments },
     async asyncData({ params }) {
       const mountain = await fetch(`https://api.nuxtjs.dev/mountains/${params.challenge}`)
       .then((res) => res.json())

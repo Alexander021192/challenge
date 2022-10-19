@@ -8,7 +8,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 /* home route and active route will show in bold as it matches / and /about */
 a.nuxt-link-active {
   font-weight: bold;
