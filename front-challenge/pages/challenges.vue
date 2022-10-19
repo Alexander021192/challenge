@@ -15,14 +15,24 @@
         >
             Hide Data
         </button>
+        <button  
+            class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
+            type="button" 
+            @click="showModal = true"
+        >
+            Toggle modal
+        </button>
+        <PopupCreateCh v-show="showModal" @close-modal="showModal = false"/>
         <LazyItemsChallenge v-if="show"/>
+        
     </div>
 </template>
 <script>
 export default {
     data() {
         return {
-            show: false
+            show: false,
+            showModal: false,
         }
     },
     methods: {
