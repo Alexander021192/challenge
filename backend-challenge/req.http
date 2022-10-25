@@ -1,7 +1,15 @@
-GET http://localhost:8080/echo
+# POST http://localhost:8080/echo
 # content-type: application/json
 
 # {
-#     "id" : 445,
-#     "msg" : "Hello BROтельник!"
+#     "id" : 10,
+#     "msg" : "Hello BROтеьник!"
 # }
+
+POST http://localhost:8080/login
+content-type: application/json
+
+{
+    "name" : "hello",
+    "password" : "123"
+}

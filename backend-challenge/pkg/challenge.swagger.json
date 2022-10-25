@@ -17,7 +17,7 @@
   ],
   "paths": {
     "/echo": {
-      "get": {
+      "post": {
         "operationId": "TestApi_Echo",
         "responses": {
           "200": {
@@ -35,17 +35,44 @@
         },
         "parameters": [
           {
-            "name": "id",
-            "in": "query",
-            "required": false,
-            "type": "integer",
-            "format": "int32"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeTestResponse"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
+    "/login": {
+      "post": {
+        "operationId": "TestApi_Login",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeLoginResponse"
+            }
           },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
           {
-            "name": "msg",
-            "in": "query",
-            "required": false,
-            "type": "string"
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeLoginRequest"
+            }
           }
         ],
         "tags": [
@@ -55,6 +82,25 @@
     }
   },
   "definitions": {
+    "challengeLoginRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeLoginResponse": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
     "challengeTestResponse": {
       "type": "object",
       "properties": {

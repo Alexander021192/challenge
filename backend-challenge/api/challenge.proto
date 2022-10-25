@@ -9,17 +9,36 @@ import "google/api/annotations.proto";
 service TestApi {
     rpc Echo(TestResponse) returns (TestResponse) {
         option (google.api.http) = {
-            get: "/echo"
-            // body: "*"
+            post: "/echo"
+            body: "*"
         };
     }
+    rpc Login(LoginRequest) returns (LoginResponse) {
+        option (google.api.http) = {
+            post: "/login"
+            body: "*"
+        };
+    }
+
+
     rpc GetUser(UserRequest) returns (UserResponse) {}
+
 }
 
 message TestResponse {
     int32 id = 1;
     string msg = 2;
 }
+
+message LoginResponse {
+    string sessionId = 1;
+}
+
+message LoginRequest {
+    string email = 1;
+    string password = 2;
+}
+
 
 message UserRequest {
     string uuid = 1;

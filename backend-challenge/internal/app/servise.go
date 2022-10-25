@@ -35,3 +35,12 @@ func (s *testApiServer) Echo(ctx context.Context, req *pb.TestResponse) (*pb.Tes
 	}
 	return response, nil
 }
+
+// Login implementation
+func (s *testApiServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
+	response, err := service.Login(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
