@@ -11,30 +11,23 @@ import (
 	"github.com/rs/cors"
 
 	challengeservice "github.com/Alexander021192/challenge/backend-challenge/internal/app"
+	"github.com/Alexander021192/challenge/backend-challenge/internal/app/storage"
 )
 
-// type testApiServer struct {
-// 	pb.UnimplementedTestApiServer
-// }
-
-// func (s *testApiServer) GetUser(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse, error) {
-// 	return &pb.UserResponse{}, nil
-// }
-
-// func (s *testApiServer) Echo(ctx context.Context, req *pb.TestResponse) (*pb.TestResponse, error) {
-// 	req.Id = 777
-// 	req.Msg = "NEW" + req.Msg
-// 	return req, nil
-// }
-
 func main() {
+	ctx := context.Background()
 
-	// Start HTTP server
-	// mux
+	// Start HTTP server // mux
 	mux := runtime.NewServeMux()
 
+	//newStore
+	store, err := storage.NewStorage()
+	if err != nil {
+		log.Fatal(ctx, err)
+	}
+
 	// new TestServer
-	testApiServer := challengeservice.NewTestApiServer()
+	testApiServer := challengeservice.NewTestApiServer(*store)
 
 	// test
 	fmt.Println(testApiServer.Echo(context.Background(), &pb.TestResponse{}))

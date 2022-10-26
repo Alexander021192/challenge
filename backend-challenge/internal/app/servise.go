@@ -4,16 +4,20 @@ import (
 	"context"
 
 	service "github.com/Alexander021192/challenge/backend-challenge/internal/app/service"
+	"github.com/Alexander021192/challenge/backend-challenge/internal/app/storage"
 	pb "github.com/Alexander021192/challenge/backend-challenge/pkg"
 )
 
 type testApiServer struct {
 	pb.UnimplementedTestApiServer
+	storage *storage.Storage
 }
 
 // NewTestApiServer return new instance TestApiServer
-func NewTestApiServer() *testApiServer {
-	return &testApiServer{}
+func NewTestApiServer(storage storage.Storage) *testApiServer {
+	return &testApiServer{
+		storage: &storage,
+	}
 }
 
 // Implemetations
@@ -38,7 +42,7 @@ func (s *testApiServer) Echo(ctx context.Context, req *pb.TestResponse) (*pb.Tes
 
 // Login implementation
 func (s *testApiServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
-	response, err := service.Login(ctx, req)
+	response, err := service.Login(ctx, s.storage, req)
 	if err != nil {
 		return nil, err
 	}
