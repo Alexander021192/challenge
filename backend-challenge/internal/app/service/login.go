@@ -3,6 +3,7 @@ package challengeservice
 import (
 	"context"
 	"errors"
+	"fmt"
 
 	"github.com/Alexander021192/challenge/backend-challenge/internal/app/storage"
 	pb "github.com/Alexander021192/challenge/backend-challenge/pkg"
@@ -19,12 +20,14 @@ func Login(ctx context.Context, store *storage.Storage, req *pb.LoginRequest) (*
 
 	// find user and comapare password
 	u, err := store.FindByEmail(req.Email)
+	fmt.Println(u, err)
 	if err != nil || !ComparePassword(req.Password, u.EncryptedPassword) {
 		return &pb.LoginResponse{SessionId: ""}, errIncorectEmailOrPassword
 	}
 
 	//generate sessionId and save it for 2 hours (gorouting with deadline)
 	sessionId, err := store.SessionSave(u.Email)
+	fmt.Println(sessionId, err)
 	if err != nil {
 		return &pb.LoginResponse{SessionId: ""}, errStatusInternalServerError
 	}
@@ -33,5 +36,6 @@ func Login(ctx context.Context, store *storage.Storage, req *pb.LoginRequest) (*
 }
 
 func ComparePassword(password string, userPassword string) bool {
-	return bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(password)) == nil
+	fmt.Println(bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(password)) == nil)
+	return userPassword == password
 }

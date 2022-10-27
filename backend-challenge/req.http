@@ -10,6 +10,7 @@ POST http://localhost:8080/login
 content-type: application/json
 
 {
-    "name" : "hello",
-    "password" : "123"
+    "email" : "user@email.com",
+    "password" : "helloworld"
 }
+//123 | user@email.com | helloworld

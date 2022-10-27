@@ -2,6 +2,8 @@ package storage
 
 import (
 	"database/sql"
+	"fmt"
+	"time"
 
 	"golang.org/x/crypto/bcrypt"
 
@@ -51,21 +53,28 @@ func (s *Storage) FindByEmail(email string) (*User, error) {
 	return u, nil
 }
 
-func (s *Storage) SessionSave(userId string) (string, error) {
-	sessionId, err := encryptString(userId)
+func (s *Storage) SessionSave(email string) (string, error) {
+	sessionId, err := encryptString(email)
+	if err != nil {
+		return "", err
+	}
+	_, err = s.db.Exec("UPDATE users SET sessionId = $1 where email = $2",
+		sessionId, email)
 	if err != nil {
 		return "", err
 	}
 
-	if err := s.db.QueryRow(
-		"UPDATE users SET sessionId = $1 where userId = $2",
-		sessionId, userId,
-	).Scan(); err != nil {
-		if err == sql.ErrNoRows {
-			return "", err
+	// need run goroutine witd deadline for update sessionId to none
+	go func(email string) {
+		fmt.Println(email)
+		time.Sleep(time.Second * 10)
+		_, err = s.db.Exec("UPDATE users SET sessionId = 'none' where email = $1", email)
+		// need log error
+		if err != nil {
+			fmt.Println(err)
 		}
-		return "", err
-	}
+	}(email)
+
 	return sessionId, nil
 }
 
