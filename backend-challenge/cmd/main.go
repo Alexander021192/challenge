@@ -31,7 +31,6 @@ func main() {
 
 	// test
 	fmt.Println(testApiServer.Echo(context.Background(), &pb.TestResponse{}))
-	fmt.Println(testApiServer.GetUser(context.Background(), &pb.UserRequest{Uuid: "testGetUser"}))
 
 	//register
 	pb.RegisterTestApiHandlerServer(context.Background(), mux, testApiServer)

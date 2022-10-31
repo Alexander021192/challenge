@@ -36,6 +36,5 @@ func Login(ctx context.Context, store *storage.Storage, req *pb.LoginRequest) (*
 }
 
 func ComparePassword(password string, userPassword string) bool {
-	fmt.Println(bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(password)) == nil)
-	return userPassword == password
+	return bcrypt.CompareHashAndPassword([]byte(userPassword), []byte(password)) == nil
 }

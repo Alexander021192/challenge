@@ -34,6 +34,25 @@ func NewStorage() (*Storage, error) {
 	}, nil
 }
 
+func (s *Storage) Create(u *User) (int32, error) {
+	if err := u.Validate(); err != nil {
+		return 0, err
+	}
+
+	if err := u.BeforeCreate(); err != nil {
+		return 0, err
+	}
+
+	if err := s.db.QueryRow(
+		"INSERT INTO users (email, encrypted_password) VALUES ($1, $2) RETURNING id",
+		u.Email,
+		u.EncryptedPassword,
+	).Scan(&u.ID); err != nil {
+		return 0, err
+	}
+	return u.ID, nil
+}
+
 func (s *Storage) FindByEmail(email string) (*User, error) {
 	u := &User{}
 	if err := s.db.QueryRow(
@@ -44,9 +63,6 @@ func (s *Storage) FindByEmail(email string) (*User, error) {
 		&u.Email,
 		&u.EncryptedPassword,
 	); err != nil {
-		if err == sql.ErrNoRows {
-			return nil, err
-		}
 		return nil, err
 	}
 

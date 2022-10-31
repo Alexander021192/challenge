@@ -10,7 +10,15 @@ POST http://localhost:8080/login
 content-type: application/json
 
 {
-    "email" : "user@email.com",
-    "password" : "helloworld"
+    "email" : "test2@email.com",
+    "password" : "testpassword2"
 }
-//123 | user@email.com | helloworld
+
+
+# POST http://localhost:8080/create_user
+# content-type: application/json
+
+# {
+#     "email" : "test2@email.com",
+#     "password" : "testpassword2"
+# }

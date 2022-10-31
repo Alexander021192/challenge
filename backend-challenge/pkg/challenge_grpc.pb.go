@@ -24,7 +24,7 @@ const _ = grpc.SupportPackageIsVersion7
 type TestApiClient interface {
 	Echo(ctx context.Context, in *TestResponse, opts ...grpc.CallOption) (*TestResponse, error)
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
-	GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error)
+	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 }
 
 type testApiClient struct {
@@ -53,9 +53,9 @@ func (c *testApiClient) Login(ctx context.Context, in *LoginRequest, opts ...grp
 	return out, nil
 }
 
-func (c *testApiClient) GetUser(ctx context.Context, in *UserRequest, opts ...grpc.CallOption) (*UserResponse, error) {
-	out := new(UserResponse)
-	err := c.cc.Invoke(ctx, "/challenge.TestApi/GetUser", in, out, opts...)
+func (c *testApiClient) CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error) {
+	out := new(CreateUserResponse)
+	err := c.cc.Invoke(ctx, "/challenge.TestApi/CreateUser", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -68,7 +68,7 @@ func (c *testApiClient) GetUser(ctx context.Context, in *UserRequest, opts ...gr
 type TestApiServer interface {
 	Echo(context.Context, *TestResponse) (*TestResponse, error)
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
-	GetUser(context.Context, *UserRequest) (*UserResponse, error)
+	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	mustEmbedUnimplementedTestApiServer()
 }
 
@@ -82,8 +82,8 @@ func (UnimplementedTestApiServer) Echo(context.Context, *TestResponse) (*TestRes
 func (UnimplementedTestApiServer) Login(context.Context, *LoginRequest) (*LoginResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Login not implemented")
 }
-func (UnimplementedTestApiServer) GetUser(context.Context, *UserRequest) (*UserResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+func (UnimplementedTestApiServer) CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method CreateUser not implemented")
 }
 func (UnimplementedTestApiServer) mustEmbedUnimplementedTestApiServer() {}
 
@@ -134,20 +134,20 @@ func _TestApi_Login_Handler(srv interface{}, ctx context.Context, dec func(inter
 	return interceptor(ctx, in, info, handler)
 }
 
-func _TestApi_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(UserRequest)
+func _TestApi_CreateUser_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateUserRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(TestApiServer).GetUser(ctx, in)
+		return srv.(TestApiServer).CreateUser(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/challenge.TestApi/GetUser",
+		FullMethod: "/challenge.TestApi/CreateUser",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(TestApiServer).GetUser(ctx, req.(*UserRequest))
+		return srv.(TestApiServer).CreateUser(ctx, req.(*CreateUserRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -168,8 +168,8 @@ var TestApi_ServiceDesc = grpc.ServiceDesc{
 			Handler:    _TestApi_Login_Handler,
 		},
 		{
-			MethodName: "GetUser",
-			Handler:    _TestApi_GetUser_Handler,
+			MethodName: "CreateUser",
+			Handler:    _TestApi_CreateUser_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

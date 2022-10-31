@@ -20,9 +20,12 @@ service TestApi {
         };
     }
 
-
-    rpc GetUser(UserRequest) returns (UserResponse) {}
-
+    rpc CreateUser(CreateUserRequest) returns (CreateUserResponse) {
+        option (google.api.http) = {
+            post: "/create_user"
+            body: "*"
+        };
+    }
 }
 
 message TestResponse {
@@ -30,22 +33,20 @@ message TestResponse {
     string msg = 2;
 }
 
-message LoginResponse {
-    string sessionId = 1;
-}
-
 message LoginRequest {
     string email = 1;
     string password = 2;
 }
 
-
-message UserRequest {
-    string uuid = 1;
+message LoginResponse {
+    string sessionId = 1;
 }
 
-message UserResponse {
-    string name = 1;
-    int32 age = 2;
-    string email = 3;
+message CreateUserRequest {
+    string email = 1;
+    string password = 2;
+}
+
+message CreateUserResponse {
+    int32 userId = 1;
 }

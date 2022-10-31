@@ -22,15 +22,6 @@ func NewTestApiServer(storage storage.Storage) *testApiServer {
 
 // Implemetations
 
-// Get user implementation
-func (s *testApiServer) GetUser(ctx context.Context, req *pb.UserRequest) (*pb.UserResponse, error) {
-	response, err := service.GetUser(ctx, req)
-	if err != nil {
-		return nil, err
-	}
-	return response, nil
-}
-
 // Echo implementation
 func (s *testApiServer) Echo(ctx context.Context, req *pb.TestResponse) (*pb.TestResponse, error) {
 	response, err := service.Echo(ctx, req)
@@ -43,6 +34,15 @@ func (s *testApiServer) Echo(ctx context.Context, req *pb.TestResponse) (*pb.Tes
 // Login implementation
 func (s *testApiServer) Login(ctx context.Context, req *pb.LoginRequest) (*pb.LoginResponse, error) {
 	response, err := service.Login(ctx, s.storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Create  user implementation
+func (s *testApiServer) CreateUser(ctx context.Context, req *pb.CreateUserRequest) (*pb.CreateUserResponse, error) {
+	response, err := service.CreateUser(ctx, s.storage, req)
 	if err != nil {
 		return nil, err
 	}

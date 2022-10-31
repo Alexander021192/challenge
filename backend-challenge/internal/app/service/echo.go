@@ -7,7 +7,7 @@ import (
 )
 
 func Echo(ctx context.Context, req *pb.TestResponse) (*pb.TestResponse, error) {
-	req.Id = 10 + req.Id
-	req.Msg = "NEW" + req.Msg
+	req.Id = 1 + req.Id
+	req.Msg = "HELLO WORLD" + req.Msg
 	return req, nil
 }

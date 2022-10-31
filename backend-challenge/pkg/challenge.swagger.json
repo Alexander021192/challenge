@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/create_user": {
+      "post": {
+        "operationId": "TestApi_CreateUser",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeCreateUserResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeCreateUserRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
     "/echo": {
       "post": {
         "operationId": "TestApi_Echo",
@@ -82,6 +114,26 @@
     }
   },
   "definitions": {
+    "challengeCreateUserRequest": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeCreateUserResponse": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "challengeLoginRequest": {
       "type": "object",
       "properties": {
@@ -109,21 +161,6 @@
           "format": "int32"
         },
         "msg": {
-          "type": "string"
-        }
-      }
-    },
-    "challengeUserResponse": {
-      "type": "object",
-      "properties": {
-        "name": {
-          "type": "string"
-        },
-        "age": {
-          "type": "integer",
-          "format": "int32"
-        },
-        "email": {
           "type": "string"
         }
       }
