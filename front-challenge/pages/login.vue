@@ -17,6 +17,7 @@
             <!-- Email input -->
             <div class="mb-6">
                 <input
+                v-model="loginData.email"
                 type="text"
                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 placeholder="Email address"
@@ -26,12 +27,12 @@
             <!-- Password input -->
             <div class="mb-6">
                 <input
-                type="password"
+                v-model="loginData.password"
+                type="text"
                 class="form-control block w-full px-4 py-2 text-xl font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
                 placeholder="Password"
                 />
             </div>
-
             <div class="flex justify-between items-center mb-6">
                 <a
                 href="#!"
@@ -42,14 +43,17 @@
 
             <!-- Submit button -->
             <button
-                type="submit"
+                type="button"
                 class="inline-block px-7 py-3 bg-blue-600 text-white font-medium text-sm leading-snug uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out w-full"
                 data-mdb-ripple="true"
                 data-mdb-ripple-color="light"
+                @click="login"
             >
                 Sign in
             </button>
             </form>
+            <p>sessionId is: {{ sessionId }}</p>
+            
         </div>
         </div>
     </div>
@@ -59,6 +63,40 @@
 <script>
 
 export default {
-    layout: 'login'
+    layout: 'login',
+    data() {
+        return {
+            loginData: {
+                email:"",
+                password: "",
+            },
+            sessionId: ""
+        }
+    },
+    methods: {
+        async login() {
+            const bodyData = {
+                "email" : this.loginData.email,
+                "password" : this.loginData.password
+            }
+            await fetch('http://localhost:8080/login', {
+            // headers: {
+            //     "Content-Type": "application/json",
+            // },
+            method: 'POST',
+            body: JSON.stringify(bodyData)
+            }).then((response) => response.json())
+            .then((data) => {
+                if (data.message) {
+                    alert(data.message)
+                } else {
+                    this.sessionId = data.sessionId
+                }
+            })
+            .catch((error) => {
+                alert(error);
+            });
+        }
+    }
 }
 </script>
