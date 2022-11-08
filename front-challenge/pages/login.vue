@@ -91,6 +91,7 @@ export default {
                     alert(data.message)
                 } else {
                     this.sessionId = data.sessionId
+                    this.$router.replace({ path: '/' });
                 }
             })
             .catch((error) => {

@@ -55,6 +55,10 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+
+    //https://cloudinary.nuxtjs.org
+    '@nuxtjs/cloudinary',
+
   ],
 
   // Axios module configuration: https://go.nuxtjs.dev/config-axios
@@ -68,6 +72,13 @@ export default {
     manifest: {
       lang: 'en'
     }
+  },
+
+  // cloudinary Configuration:
+  cloudinary: {
+    cloudName: process.env.CLOUDNAME,
+    apiKey: process.env.API_KEY,
+    apiSecret: process.env.API_SECRET,
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
