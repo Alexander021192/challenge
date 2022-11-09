@@ -28,6 +28,7 @@
     </div>
 </template>
 <script>
+
 export default {
     data() {
         return {
@@ -37,7 +38,13 @@ export default {
     },
     methods: {
         showData() {
-            this.show = !this.show
+            if (this.$store.state.sessionId === "") {
+                alert("Session expired")
+                this.$router.replace({ path: '/login' });
+            } else {
+                console.log(this.$store.state.sessionId)
+                this.show = !this.show
+            }
         }
     }
 }

@@ -11,8 +11,13 @@
                 <textarea v-model="commentMsg" id="comment" rows="2" class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required=""></textarea>
             </div>
             <div class="flex justify-between items-center py-2 px-3 border-t dark:border-gray-600">
-                <button type="submit" class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800">
-                    Post comment {{commentMsg}}
+                <!-- type="submit" -->
+                <button
+                    type="button" 
+                    class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
+                    @click="postComment"
+                >
+                    Post comment
                 </button>
                 <div class="flex pl-0 space-x-1 sm:pl-2">
                     <button type="button" class="p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600">
@@ -42,7 +47,7 @@
                     src="https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&faces=1&faceindex=1&facepad=2.5&w=500&h=500&q=80">
                 <div class="flex-col mt-1">
                     <div class="flex items-center flex-1 px-4 font-bold leading-tight">Noob master
-                        <span class="ml-2 text-xs font-normal text-gray-500">2 weeks ago</span>
+                        <span class="ml-2 text-xs font-normal text-gray-500">{{commentDate('9th November 2022, 9:53 am')}}</span>
                     </div>
                     <div class="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
@@ -64,12 +69,13 @@ textarea:focus
 </style>
 
 <script>
+import moment from 'moment'
 export default {
     name: 'TheComments',
     data() {
             return {
                 commentMsg: "",
-                imageUrl: null
+                imageUrl: null,
             }
         },
     methods: {
@@ -98,6 +104,31 @@ export default {
                 // console.log(res.url)
             })
         },
+        async postComment() {
+            const commentDate = moment(new Date()).format('Do MMMM YYYY, h:mm a');
+            console.log(this.$store.state.sessionId, commentDate, this.commentMsg, this.imageUrl)
+            await fetch('', {
+            // headers: {
+            //     "Content-Type": "application/json",
+            // },
+            // method: 'POST',
+            // body: JSON.stringify(bodyData)
+            // }).then((response) => response.json())
+            // .then((data) => {
+            //     if (data.message) {
+            //         alert(data.message)
+            //     } else {
+            //         this.$store.commit('setSession', data.sessionId)
+            //         this.$router.replace({ path: '/' });
+            //     }
+            // })
+            // .catch((error) => {
+            //     alert(error);
+            });
+        },
+        commentDate(date) {
+            return moment(date, "Do MMMM YYYY, h:mm a").fromNow()
+        }
     }
 }
 </script>

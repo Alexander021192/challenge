@@ -52,7 +52,7 @@
                 Sign in
             </button>
             </form>
-            <p>sessionId is: {{ sessionId }}</p>
+            <p>sessionId is: {{ this.$store.state.sessionId }}</p>
             
         </div>
         </div>
@@ -61,7 +61,6 @@
 </template>
 
 <script>
-
 export default {
     layout: 'login',
     data() {
@@ -70,7 +69,6 @@ export default {
                 email:"",
                 password: "",
             },
-            sessionId: ""
         }
     },
     methods: {
@@ -90,7 +88,7 @@ export default {
                 if (data.message) {
                     alert(data.message)
                 } else {
-                    this.sessionId = data.sessionId
+                    this.$store.commit('setSession', data.sessionId)
                     this.$router.replace({ path: '/' });
                 }
             })
