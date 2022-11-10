@@ -18,7 +18,7 @@ func CreateUser(ctx context.Context, store *storage.Storage, req *pb.CreateUserR
 		Password: req.Password,
 	}
 
-	id, err := store.Create(u)
+	id, err := store.CreateUser(u)
 	if err != nil {
 		return &pb.CreateUserResponse{UserId: 0}, errStatusUnprocessableEntity
 	}

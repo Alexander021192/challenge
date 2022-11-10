@@ -16,6 +16,38 @@
     "application/json"
   ],
   "paths": {
+    "/create_comment": {
+      "post": {
+        "operationId": "TestApi_CreateComment",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeCreateCommentResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeCreateCommentRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
     "/create_user": {
       "post": {
         "operationId": "TestApi_CreateUser",
@@ -114,6 +146,32 @@
     }
   },
   "definitions": {
+    "challengeCreateCommentRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "commentImg": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeCreateCommentResponse": {
+      "type": "object",
+      "properties": {
+        "commentId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "challengeCreateUserRequest": {
       "type": "object",
       "properties": {

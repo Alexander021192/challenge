@@ -34,7 +34,7 @@ func NewStorage() (*Storage, error) {
 	}, nil
 }
 
-func (s *Storage) Create(u *User) (int32, error) {
+func (s *Storage) CreateUser(u *User) (int32, error) {
 	if err := u.Validate(); err != nil {
 		return 0, err
 	}
@@ -53,6 +53,25 @@ func (s *Storage) Create(u *User) (int32, error) {
 	return u.ID, nil
 }
 
+func (s *Storage) CreateComment(c *Comment) (int32, error) {
+	// if err := c.Validate(); err != nil {
+	// 	return 0, err
+	// }
+
+	if err := s.db.QueryRow(
+		"INSERT INTO comments (author, author_img, date, comment, comment_img) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+		c.Author,
+		c.ProfileImg,
+		c.Date,
+		c.Comment,
+		c.CommentImg,
+	).Scan(&c.ID); err != nil {
+		return 0, err
+	}
+	return c.ID, nil
+}
+
+
 func (s *Storage) FindByEmail(email string) (*User, error) {
 	u := &User{}
 	if err := s.db.QueryRow(
@@ -66,6 +85,20 @@ func (s *Storage) FindByEmail(email string) (*User, error) {
 		return nil, err
 	}
 
+	return u, nil
+}
+
+func (s *Storage) FindBySession(sessionId string) (*User, error) {
+	u := &User{}
+	if err := s.db.QueryRow(
+		"SELECT profile_name, profile_img FROM users WHERE sessionId = $1",
+		sessionId,
+	).Scan(
+		&u.ProfileName,
+		&u.ProfileImg,
+	); err != nil {
+		return nil, err
+	}
 	return u, nil
 }
 
@@ -83,7 +116,7 @@ func (s *Storage) SessionSave(email string) (string, error) {
 	// need run goroutine witd deadline for update sessionId to none
 	go func(email string) {
 		fmt.Println(email)
-		time.Sleep(time.Second * 10)
+		time.Sleep(time.Minute * 10)
 		_, err = s.db.Exec("UPDATE users SET sessionId = 'none' where email = $1", email)
 		// need log error
 		if err != nil {

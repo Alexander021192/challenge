@@ -5,11 +5,22 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 )
 
+type Comment struct {
+	ID          int32    `json:"id"`
+	Author  	string `json:"author"`
+	ProfileImg 	string `json:"profile_img"`
+	Date 		string `json:"date"`
+	Comment 	string `json:"comment"`
+	CommentImg 	string `json:"comment_img"`
+}
+
 type User struct {
 	ID                int32    `json:"id"`
 	Email             string `json:"email"`
 	Password          string `json:"password,omitempty"`
 	EncryptedPassword string `json:"-"`
+	ProfileName       string `json:"profile_name"`
+	ProfileImg        string `json:"profile_img"`
 }
 
 func (u *User) Validate() error {

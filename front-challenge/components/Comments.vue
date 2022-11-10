@@ -9,11 +9,12 @@
             <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
                 <label for="comment" class="sr-only">Your comment</label>
                 <textarea v-model="commentMsg" id="comment" rows="2" class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required=""></textarea>
+                <img v-if="imageUrl" class="mx-auto w-50 h-40 rounded-lg" :src="imageUrl">
             </div>
             <div class="flex justify-between items-center py-2 px-3 border-t dark:border-gray-600">
                 <!-- type="submit" -->
                 <button
-                    type="button" 
+                    type="submit" 
                     class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
                     @click="postComment"
                 >
@@ -52,7 +53,7 @@
                     <div class="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
                         "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
                     </div>
-                    <img v-if="imageUrl" class="mx-auto w-50 h-40 rounded-lg" :src="imageUrl">
+                    <img v-if="imageUrl" class="mx-auto w-50 h-40 rounded-lg" :src="image">
                 </div>
             </div>
         </div>
@@ -106,24 +107,31 @@ export default {
         },
         async postComment() {
             const commentDate = moment(new Date()).format('Do MMMM YYYY, h:mm a');
+            const bodyData = {
+                "sessionId" : this.$store.state.sessionId,
+                "date" : commentDate,
+                "comment" : this.commentMsg,
+                "commentImg" : this.imageUrl,
+            }
             console.log(this.$store.state.sessionId, commentDate, this.commentMsg, this.imageUrl)
-            await fetch('', {
+
+            await fetch('http://localhost:8080/create_comment', {
             // headers: {
             //     "Content-Type": "application/json",
             // },
-            // method: 'POST',
-            // body: JSON.stringify(bodyData)
-            // }).then((response) => response.json())
-            // .then((data) => {
-            //     if (data.message) {
-            //         alert(data.message)
-            //     } else {
-            //         this.$store.commit('setSession', data.sessionId)
-            //         this.$router.replace({ path: '/' });
-            //     }
-            // })
-            // .catch((error) => {
-            //     alert(error);
+            method: 'POST',
+            body: JSON.stringify(bodyData)
+            }).then((response) => response.json())
+            .then((data) => {
+                if (data.message) {
+                    alert(data.message)
+                    this.$router.replace({ path: '/login' });
+                } else {
+                   alert("Comment create success")
+                }
+            })
+            .catch((error) => {
+                alert(error);
             });
         },
         commentDate(date) {

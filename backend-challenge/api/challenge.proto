@@ -26,6 +26,13 @@ service TestApi {
             body: "*"
         };
     }
+
+    rpc CreateComment(CreateCommentRequest) returns (CreateCommentResponse) {
+        option (google.api.http) = {
+            post: "/create_comment"
+            body: "*"
+        };
+    }
 }
 
 message TestResponse {
@@ -49,4 +56,15 @@ message CreateUserRequest {
 
 message CreateUserResponse {
     int32 userId = 1;
+}
+
+message CreateCommentRequest {
+    string sessionId = 1;
+    string date = 2;
+    string comment = 3;
+    string commentImg = 4;
+}
+
+message CreateCommentResponse {
+    int32 commentId = 1;
 }

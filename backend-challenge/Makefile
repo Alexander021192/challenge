@@ -4,6 +4,9 @@ generate:
 run:
 	go run cmd/main.go
 
+migrate:
+	migrate -path migrations -database "postgres://localhost/challenge_test?sslmode=disable" up
+
 clean:
 	rm -rf pkg
 
