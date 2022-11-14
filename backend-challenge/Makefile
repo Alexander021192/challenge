@@ -15,3 +15,7 @@ clean:
 
 # for export path env
 # export PATH="$PATH:$(go env GOPATH)/bin"
+
+
+# for show database 
+# psql -d challenge_test

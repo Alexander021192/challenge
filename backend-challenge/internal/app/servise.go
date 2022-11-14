@@ -49,9 +49,18 @@ func (s *testApiServer) CreateUser(ctx context.Context, req *pb.CreateUserReques
 	return response, nil
 }
 
-// Create  user implementation
+// Create Comment implementation
 func (s *testApiServer) CreateComment(ctx context.Context, req *pb.CreateCommentRequest) (*pb.CreateCommentResponse, error) {
 	response, err := service.CreateComment(ctx, s.storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Create Comment implementation
+func (s *testApiServer) GetComments(ctx context.Context, req *pb.EmptyRequest) (*pb.GetCommentsResponse, error) {
+	response, err := service.GetComments(ctx, s.storage, req)
 	if err != nil {
 		return nil, err
 	}

@@ -7,6 +7,7 @@ import (
 
 	"golang.org/x/crypto/bcrypt"
 
+	challenge "github.com/Alexander021192/challenge/backend-challenge/pkg"
 	_ "github.com/lib/pq"
 )
 
@@ -69,6 +70,31 @@ func (s *Storage) CreateComment(c *Comment) (int32, error) {
 		return 0, err
 	}
 	return c.ID, nil
+}
+
+func (s *Storage) GetComments() ([]*challenge.Comment, error) {
+	var listComments []*challenge.Comment
+
+	rows, err := s.db.Query("SELECT author,author_img,date,comment,comment_img FROM comments ORDER BY id")
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	for rows.Next() {
+		object := &challenge.Comment{}
+		errScan := rows.Scan(
+			&object.Author,
+			&object.AuthorImg,
+			&object.Date,
+			&object.Comment,
+			&object.CommentImg)
+		if errScan != nil {
+			fmt.Println(errScan)
+			return nil, errScan
+		}
+		listComments = append(listComments, object)
+	}
+	return listComments, nil
 }
 
 

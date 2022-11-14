@@ -24,12 +24,19 @@
 # }
 
 # create comment
-POST http://localhost:8080/create_comment
+# POST http://localhost:8080/create_comment
+# content-type: application/json
+
+# {
+#     "sessionId" : "testSession",
+#     "date" : "9 november 2022 11:10 am",
+#     "comment" : "hello WORLD",
+#     "commentImg" : "https://res.cloudinary.com/du72cfh85/image/upload/v1667885801/sample.jpg"
+# }
+
+POST http://localhost:8080/get_comments
 content-type: application/json
 
 {
-    "sessionId" : "testSession",
-    "date" : "9 november 2022 11:10 am",
-    "comment" : "hello WORLD",
-    "commentImg" : "https://res.cloudinary.com/du72cfh85/image/upload/v1667885801/sample.jpg"
+    "sessionId" : "sessionTest"
 }

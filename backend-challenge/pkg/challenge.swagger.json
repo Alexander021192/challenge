@@ -112,6 +112,38 @@
         ]
       }
     },
+    "/get_comments": {
+      "post": {
+        "operationId": "TestApi_GetComments",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeGetCommentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeEmptyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
     "/login": {
       "post": {
         "operationId": "TestApi_Login",
@@ -146,6 +178,26 @@
     }
   },
   "definitions": {
+    "challengeComment": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string"
+        },
+        "authorImg": {
+          "type": "string"
+        },
+        "date": {
+          "type": "string"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "commentImg": {
+          "type": "string"
+        }
+      }
+    },
     "challengeCreateCommentRequest": {
       "type": "object",
       "properties": {
@@ -189,6 +241,25 @@
         "userId": {
           "type": "integer",
           "format": "int32"
+        }
+      }
+    },
+    "challengeEmptyRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeGetCommentsResponse": {
+      "type": "object",
+      "properties": {
+        "comments": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/challengeComment"
+          }
         }
       }
     },

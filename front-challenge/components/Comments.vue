@@ -38,22 +38,34 @@
             </div>
         </div>
         </form>
-
+		<!-- <pre>{{comments}} </pre> -->
+		<div v-if="comments.message">
+			<ErrorPage :msg="comments.message"/>
+        </div>
         <div
-            v-for="n in 4"
-            :key=n
-            class="flex-col w-full py-4 mx-auto mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
+            v-for="comment in comments.comments"
+			v-else
+            :key="comment.comment"
+            class="flex-col w-full py-4 mx-auto mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3"
+		>
             <div class="flex flex-row">
-                <img class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" alt="Noob master's avatar"
-                    src="https://images.unsplash.com/photo-1517070208541-6ddc4d3efbcb?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&faces=1&faceindex=1&facepad=2.5&w=500&h=500&q=80">
+                <img 
+					class="object-cover w-12 h-12 border-2 border-gray-300 rounded-full" 
+					:alt="comment.author" 
+					:src="comment.authorImg"
+				>
                 <div class="flex-col mt-1">
-                    <div class="flex items-center flex-1 px-4 font-bold leading-tight">Noob master
-                        <span class="ml-2 text-xs font-normal text-gray-500">{{commentDate('9th November 2022, 9:53 am')}}</span>
+                    <div class="flex items-center flex-1 px-4 font-bold leading-tight">{{comment.author}}
+                        <span class="ml-2 text-xs font-normal text-gray-500">{{commentDate(comment.date)}}</span>
                     </div>
-                    <div class="flex-1 px-2 ml-2 text-sm font-medium leading-loose text-gray-600">
-                        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-                    </div>
-                    <img v-if="imageUrl" class="mx-auto w-50 h-40 rounded-lg" :src="image">
+                    <div class="flex-1 px-2 ml-3 text-sm font-medium leading-loose text-gray-600">
+						{{comment.comment}}
+					</div>
+                    <img 
+						v-if="comment.commentImg" 
+						class="mx-auto w-50 h-40 rounded-lg" 
+						:src="comment.commentImg"
+					>
                 </div>
             </div>
         </div>
@@ -75,10 +87,21 @@ export default {
     name: 'TheComments',
     data() {
             return {
-                commentMsg: "",
-                imageUrl: null,
+				commentMsg: "",
+				imageUrl: null,
+				comments: {}
             }
         },
+	async fetch() {
+		const bodyData = {
+			// "sessionId" : this.$store.state.sessionId
+			"sessionId" : "sessionTest"
+		}
+        this.comments = await fetch('http://localhost:8080/get_comments', {
+			method: 'POST',
+            body: JSON.stringify(bodyData)
+		}).then((res) => res.json())
+    },
     methods: {
         async fileSelected(e) {
             const file = e.target.files[0];
@@ -113,7 +136,7 @@ export default {
                 "comment" : this.commentMsg,
                 "commentImg" : this.imageUrl,
             }
-            console.log(this.$store.state.sessionId, commentDate, this.commentMsg, this.imageUrl)
+            // console.log(this.$store.state.sessionId, commentDate, this.commentMsg, this.imageUrl)
 
             await fetch('http://localhost:8080/create_comment', {
             // headers: {

@@ -26,6 +26,7 @@ type TestApiClient interface {
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 	CreateUser(ctx context.Context, in *CreateUserRequest, opts ...grpc.CallOption) (*CreateUserResponse, error)
 	CreateComment(ctx context.Context, in *CreateCommentRequest, opts ...grpc.CallOption) (*CreateCommentResponse, error)
+	GetComments(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetCommentsResponse, error)
 }
 
 type testApiClient struct {
@@ -72,6 +73,15 @@ func (c *testApiClient) CreateComment(ctx context.Context, in *CreateCommentRequ
 	return out, nil
 }
 
+func (c *testApiClient) GetComments(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetCommentsResponse, error) {
+	out := new(GetCommentsResponse)
+	err := c.cc.Invoke(ctx, "/challenge.TestApi/GetComments", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestApiServer is the server API for TestApi service.
 // All implementations must embed UnimplementedTestApiServer
 // for forward compatibility
@@ -80,6 +90,7 @@ type TestApiServer interface {
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	CreateUser(context.Context, *CreateUserRequest) (*CreateUserResponse, error)
 	CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error)
+	GetComments(context.Context, *EmptyRequest) (*GetCommentsResponse, error)
 	mustEmbedUnimplementedTestApiServer()
 }
 
@@ -98,6 +109,9 @@ func (UnimplementedTestApiServer) CreateUser(context.Context, *CreateUserRequest
 }
 func (UnimplementedTestApiServer) CreateComment(context.Context, *CreateCommentRequest) (*CreateCommentResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method CreateComment not implemented")
+}
+func (UnimplementedTestApiServer) GetComments(context.Context, *EmptyRequest) (*GetCommentsResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetComments not implemented")
 }
 func (UnimplementedTestApiServer) mustEmbedUnimplementedTestApiServer() {}
 
@@ -184,6 +198,24 @@ func _TestApi_CreateComment_Handler(srv interface{}, ctx context.Context, dec fu
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestApi_GetComments_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(EmptyRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestApiServer).GetComments(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/challenge.TestApi/GetComments",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestApiServer).GetComments(ctx, req.(*EmptyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestApi_ServiceDesc is the grpc.ServiceDesc for TestApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -206,6 +238,10 @@ var TestApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "CreateComment",
 			Handler:    _TestApi_CreateComment_Handler,
+		},
+		{
+			MethodName: "GetComments",
+			Handler:    _TestApi_GetComments_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

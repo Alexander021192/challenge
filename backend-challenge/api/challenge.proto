@@ -33,6 +33,13 @@ service TestApi {
             body: "*"
         };
     }
+
+    rpc GetComments(EmptyRequest) returns (GetCommentsResponse) {
+        option (google.api.http) = {
+            post: "/get_comments"
+            body: "*"
+        };
+    }
 }
 
 message TestResponse {
@@ -67,4 +74,20 @@ message CreateCommentRequest {
 
 message CreateCommentResponse {
     int32 commentId = 1;
+}
+
+message EmptyRequest {
+    string sessionId = 1;
+}
+
+message Comment {
+    string author = 1;
+    string author_img = 2;
+    string date = 3;
+    string comment = 4;
+    string commentImg = 5;
+}
+
+message GetCommentsResponse {
+    repeated Comment comments = 1;
 }
