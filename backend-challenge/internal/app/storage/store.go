@@ -97,6 +97,48 @@ func (s *Storage) GetComments() ([]*challenge.Comment, error) {
 	return listComments, nil
 }
 
+func (s *Storage) CreatePost(p *Post) (int32, error) {
+	// if err := c.Validate(); err != nil {
+	// 	return 0, err
+	// }
+
+	if err := s.db.QueryRow(
+		"INSERT INTO posts (author, title, location, post_text, post_img) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+		p.Author,
+		p.Title,
+		p.Location,
+		p.PostText,
+		p.PostImg,
+	).Scan(&p.ID); err != nil {
+		return 0, err
+	}
+	return p.ID, nil
+}
+
+func (s *Storage) GetPosts() ([]*challenge.Post, error) {
+	var listPosts []*challenge.Post
+
+	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img FROM posts ORDER BY id")
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	for rows.Next() {
+		object := &challenge.Post{}
+		errScan := rows.Scan(
+			&object.Author,
+			&object.Title,
+			&object.Location,
+			&object.PostText,
+			&object.PostImg)
+		if errScan != nil {
+			fmt.Println(errScan)
+			return nil, errScan
+		}
+		listPosts = append(listPosts, object)
+	}
+	return listPosts, nil
+}
 
 func (s *Storage) FindByEmail(email string) (*User, error) {
 	u := &User{}

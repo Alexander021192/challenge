@@ -5,6 +5,15 @@ import (
 	"github.com/go-ozzo/ozzo-validation/is"
 )
 
+type Post struct {
+	ID			int32	`json:"id"`
+	Author		string	`json:"author"`
+	Title		string	`json:"title"`
+	Location	string	`json:"location"`
+	PostText	string	`json:"post_text"`
+	PostImg 	string	`json:"post_img"`
+}
+
 type Comment struct {
 	ID          int32    `json:"id"`
 	Author  	string `json:"author"`

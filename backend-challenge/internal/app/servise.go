@@ -66,3 +66,21 @@ func (s *testApiServer) GetComments(ctx context.Context, req *pb.EmptyRequest) (
 	}
 	return response, nil
 }
+
+// Create Post implementation
+func (s *testApiServer) CreatePost(ctx context.Context, req *pb.CreatePostRequest) (*pb.CreatePostResponse, error) {
+	response, err := service.CreatePost(ctx, s.storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}
+
+// Create Comment implementation
+func (s *testApiServer) GetPosts(ctx context.Context, req *pb.EmptyRequest) (*pb.GetPostsResponse, error) {
+	response, err := service.GetPosts(ctx, s.storage, req)
+	if err != nil {
+		return nil, err
+	}
+	return response, nil
+}

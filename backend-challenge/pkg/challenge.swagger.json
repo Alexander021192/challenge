@@ -48,6 +48,38 @@
         ]
       }
     },
+    "/create_post": {
+      "post": {
+        "operationId": "TestApi_CreatePost",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeCreatePostResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeCreatePostRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
     "/create_user": {
       "post": {
         "operationId": "TestApi_CreateUser",
@@ -120,6 +152,38 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/challengeGetCommentsResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeEmptyRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
+    "/get_posts": {
+      "post": {
+        "operationId": "TestApi_GetPosts",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeGetPostsResponse"
             }
           },
           "default": {
@@ -224,6 +288,35 @@
         }
       }
     },
+    "challengeCreatePostRequest": {
+      "type": "object",
+      "properties": {
+        "sessionId": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "postText": {
+          "type": "string"
+        },
+        "postImg": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeCreatePostResponse": {
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "integer",
+          "format": "int32"
+        }
+      }
+    },
     "challengeCreateUserRequest": {
       "type": "object",
       "properties": {
@@ -263,6 +356,17 @@
         }
       }
     },
+    "challengeGetPostsResponse": {
+      "type": "object",
+      "properties": {
+        "posts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/challengePost"
+          }
+        }
+      }
+    },
     "challengeLoginRequest": {
       "type": "object",
       "properties": {
@@ -278,6 +382,26 @@
       "type": "object",
       "properties": {
         "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "challengePost": {
+      "type": "object",
+      "properties": {
+        "author": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "postText": {
+          "type": "string"
+        },
+        "postImg": {
           "type": "string"
         }
       }
