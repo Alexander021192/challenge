@@ -176,6 +176,38 @@
         ]
       }
     },
+    "/get_post_by_id": {
+      "post": {
+        "operationId": "TestApi_GetPostById",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/challengeGetPostResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response.",
+            "schema": {
+              "$ref": "#/definitions/rpcStatus"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/challengeGetPostRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TestApi"
+        ]
+      }
+    },
     "/get_posts": {
       "post": {
         "operationId": "TestApi_GetPosts",
@@ -356,6 +388,25 @@
         }
       }
     },
+    "challengeGetPostRequest": {
+      "type": "object",
+      "properties": {
+        "postId": {
+          "type": "string"
+        },
+        "sessionId": {
+          "type": "string"
+        }
+      }
+    },
+    "challengeGetPostResponse": {
+      "type": "object",
+      "properties": {
+        "post": {
+          "$ref": "#/definitions/challengePost"
+        }
+      }
+    },
     "challengeGetPostsResponse": {
       "type": "object",
       "properties": {
@@ -403,6 +454,10 @@
         },
         "postImg": {
           "type": "string"
+        },
+        "Id": {
+          "type": "integer",
+          "format": "int32"
         }
       }
     },

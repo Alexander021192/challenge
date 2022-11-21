@@ -54,6 +54,13 @@ service TestApi {
             body: "*"
         };
     }
+
+    rpc GetPostById(GetPostRequest) returns (GetPostResponse) {
+        option (google.api.http) = {
+            post: "/get_post_by_id"
+            body: "*"
+        };
+    }
 }
 
 message TestResponse {
@@ -124,8 +131,18 @@ message Post {
     string location = 3;
     string postText = 4;
     string postImg = 5;
+    int32 Id = 6;
 }
 
 message GetPostsResponse {
     repeated Post posts = 1;
+}
+
+message GetPostRequest {
+    string postId = 1;
+    string sessionId = 2;
+}
+
+message GetPostResponse {
+    Post post = 1;
 }

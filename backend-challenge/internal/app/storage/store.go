@@ -75,7 +75,7 @@ func (s *Storage) CreateComment(c *Comment) (int32, error) {
 func (s *Storage) GetComments() ([]*challenge.Comment, error) {
 	var listComments []*challenge.Comment
 
-	rows, err := s.db.Query("SELECT author,author_img,date,comment,comment_img FROM comments ORDER BY id")
+	rows, err := s.db.Query("SELECT author,author_img,date,comment,comment_img FROM comments ORDER BY id DESC")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -118,7 +118,7 @@ func (s *Storage) CreatePost(p *Post) (int32, error) {
 func (s *Storage) GetPosts() ([]*challenge.Post, error) {
 	var listPosts []*challenge.Post
 
-	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img FROM posts ORDER BY id")
+	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img,id FROM posts ORDER BY id")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -130,7 +130,8 @@ func (s *Storage) GetPosts() ([]*challenge.Post, error) {
 			&object.Title,
 			&object.Location,
 			&object.PostText,
-			&object.PostImg)
+			&object.PostImg,
+			&object.Id)
 		if errScan != nil {
 			fmt.Println(errScan)
 			return nil, errScan
@@ -138,6 +139,32 @@ func (s *Storage) GetPosts() ([]*challenge.Post, error) {
 		listPosts = append(listPosts, object)
 	}
 	return listPosts, nil
+}
+
+func (s *Storage) GetPostById(postId string) (*challenge.Post, error) {
+	var post *challenge.Post
+
+	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img,id FROM posts WHERE id = $1", postId)
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+	for rows.Next() {
+		object := &challenge.Post{}
+		errScan := rows.Scan(
+			&object.Author,
+			&object.Title,
+			&object.Location,
+			&object.PostText,
+			&object.PostImg,
+			&object.Id)
+		if errScan != nil {
+			fmt.Println(errScan)
+			return nil, errScan
+		}
+		post = object
+	}
+	return post, nil
 }
 
 func (s *Storage) FindByEmail(email string) (*User, error) {

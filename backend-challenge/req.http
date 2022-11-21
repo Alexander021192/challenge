@@ -59,3 +59,12 @@
 # {
 #     "sessionId" : "sessionTest"
 # }
+
+
+POST http://localhost:8080/get_post_by_id
+content-type: application/json
+
+{
+    "sessionId" : "sessionTest",
+    "postId" : "1"
+}

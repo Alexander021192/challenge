@@ -29,6 +29,7 @@ type TestApiClient interface {
 	GetComments(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetCommentsResponse, error)
 	CreatePost(ctx context.Context, in *CreatePostRequest, opts ...grpc.CallOption) (*CreatePostResponse, error)
 	GetPosts(ctx context.Context, in *EmptyRequest, opts ...grpc.CallOption) (*GetPostsResponse, error)
+	GetPostById(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostResponse, error)
 }
 
 type testApiClient struct {
@@ -102,6 +103,15 @@ func (c *testApiClient) GetPosts(ctx context.Context, in *EmptyRequest, opts ...
 	return out, nil
 }
 
+func (c *testApiClient) GetPostById(ctx context.Context, in *GetPostRequest, opts ...grpc.CallOption) (*GetPostResponse, error) {
+	out := new(GetPostResponse)
+	err := c.cc.Invoke(ctx, "/challenge.TestApi/GetPostById", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // TestApiServer is the server API for TestApi service.
 // All implementations must embed UnimplementedTestApiServer
 // for forward compatibility
@@ -113,6 +123,7 @@ type TestApiServer interface {
 	GetComments(context.Context, *EmptyRequest) (*GetCommentsResponse, error)
 	CreatePost(context.Context, *CreatePostRequest) (*CreatePostResponse, error)
 	GetPosts(context.Context, *EmptyRequest) (*GetPostsResponse, error)
+	GetPostById(context.Context, *GetPostRequest) (*GetPostResponse, error)
 	mustEmbedUnimplementedTestApiServer()
 }
 
@@ -140,6 +151,9 @@ func (UnimplementedTestApiServer) CreatePost(context.Context, *CreatePostRequest
 }
 func (UnimplementedTestApiServer) GetPosts(context.Context, *EmptyRequest) (*GetPostsResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetPosts not implemented")
+}
+func (UnimplementedTestApiServer) GetPostById(context.Context, *GetPostRequest) (*GetPostResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetPostById not implemented")
 }
 func (UnimplementedTestApiServer) mustEmbedUnimplementedTestApiServer() {}
 
@@ -280,6 +294,24 @@ func _TestApi_GetPosts_Handler(srv interface{}, ctx context.Context, dec func(in
 	return interceptor(ctx, in, info, handler)
 }
 
+func _TestApi_GetPostById_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetPostRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(TestApiServer).GetPostById(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/challenge.TestApi/GetPostById",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(TestApiServer).GetPostById(ctx, req.(*GetPostRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // TestApi_ServiceDesc is the grpc.ServiceDesc for TestApi service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -314,6 +346,10 @@ var TestApi_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetPosts",
 			Handler:    _TestApi_GetPosts_Handler,
+		},
+		{
+			MethodName: "GetPostById",
+			Handler:    _TestApi_GetPostById_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

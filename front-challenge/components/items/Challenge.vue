@@ -29,7 +29,7 @@
 					{{post.title}}
 				</div>
 				<NuxtLink
-					:to="post.author"
+					:to="post.Id.toString()"
 					class="block mt-1 text-lg leading-tight font-semibold text-gray-900 hover:underline"
 				> {{post.author}}
 				</NuxtLink>
@@ -49,7 +49,6 @@ export default {
 	components: { ErrorPage },
 	data() {
 		return {
-			posts: [],
 			posts: {},
 			error: ""
 		}
