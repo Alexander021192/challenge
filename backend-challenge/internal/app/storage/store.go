@@ -45,9 +45,11 @@ func (s *Storage) CreateUser(u *User) (int32, error) {
 	}
 
 	if err := s.db.QueryRow(
-		"INSERT INTO users (email, encrypted_password) VALUES ($1, $2) RETURNING id",
+		"INSERT INTO users (email, encrypted_password, profile_name, profile_img) VALUES ($1, $2, $3, $4) RETURNING id",
 		u.Email,
 		u.EncryptedPassword,
+		u.ProfileName,
+		u.ProfileImg,
 	).Scan(&u.ID); err != nil {
 		return 0, err
 	}

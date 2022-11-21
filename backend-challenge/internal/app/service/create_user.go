@@ -16,6 +16,8 @@ func CreateUser(ctx context.Context, store *storage.Storage, req *pb.CreateUserR
 	u := &storage.User{
 		Email:    req.Email,
 		Password: req.Password,
+		ProfileName: req.Name,
+		ProfileImg: req.Img,
 	}
 
 	id, err := store.CreateUser(u)

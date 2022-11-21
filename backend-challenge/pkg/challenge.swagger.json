@@ -357,6 +357,12 @@
         },
         "password": {
           "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "img": {
+          "type": "string"
         }
       }
     },

@@ -80,6 +80,8 @@ message LoginResponse {
 message CreateUserRequest {
     string email = 1;
     string password = 2;
+    string name = 3;
+    string img = 4;
 }
 
 message CreateUserResponse {
