@@ -120,7 +120,7 @@ func (s *Storage) CreatePost(p *Post) (int32, error) {
 func (s *Storage) GetPosts() ([]*challenge.Post, error) {
 	var listPosts []*challenge.Post
 
-	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img,id FROM posts ORDER BY id")
+	rows, err := s.db.Query("SELECT author,title,location,post_text,post_img,id FROM posts ORDER BY id DESC")
 	if err != nil {
 		fmt.Println(err)
 		return nil, err
@@ -212,7 +212,7 @@ func (s *Storage) SessionSave(email string) (string, error) {
 
 	// need run goroutine witd deadline for update sessionId to none
 	go func(email string) {
-		fmt.Println(email)
+		// fmt.Println(email)
 		time.Sleep(time.Minute * 10)
 		_, err = s.db.Exec("UPDATE users SET sessionId = 'none' where email = $1", email)
 		// need log error

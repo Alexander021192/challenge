@@ -1,5 +1,5 @@
 export const state = () => ({
-    sessionId: "sessionTest"
+    sessionId: ""
 })
 
 export const mutations = {

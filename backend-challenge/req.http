@@ -19,10 +19,10 @@ POST http://localhost:8080/create_user
 content-type: application/json
 
 {
-    "email" : "test2create@email.com",
-    "password" : "testpassword2",
-    "name":"test_create_user",
-    "img":"https://res.cloudinary.com/du72cfh85/image/upload/v1669030382/profile_img/testAva_jv9io7.png"
+    "email" : "fox@email.com",
+    "password" : "sashaanna",
+    "name":"fox",
+    "img":"https://res.cloudinary.com/du72cfh85/image/upload/v1669050887/profile_img/fox_jkreue.png"
 }
 
 # create comment

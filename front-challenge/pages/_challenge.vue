@@ -19,31 +19,30 @@
 			</NuxtLink>
 			<div class="relative px-4 sm:px-6 lg:px-8">
 				<div class="text-lg max-w-prose mx-auto mb-6">
-					<!-- <pre>{{post.post}}</pre -->
+					<!-- <pre>{{post}} здесь пост</pre> -->
 					<p class="text-base text-center leading-6 text-indigo-600 font-semibold tracking-wide uppercase">
-						{{post.post.author}}
+						{{post.author}}
 					</p>
 					<h1 class="mt-2 mb-8 text-3xl text-center leading-8 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10">
-						{{post.post.title}}
+						{{post.title}}
 					</h1>
 				</div>
 				<figure>
 					<img
 						class="w-auto rounded-lg mx-auto"
-						:src="post.post.postImg"
-						:alt="post.post.title"
+						:src="post.postImg"
+						:alt="post.title"
 						width="1310"
 						height="873"
 					/>
-					<figcaption class="text-center">{{post.title}}</figcaption>
+					<!-- <figcaption class="text-center">{{post.title}}</figcaption> -->
 				</figure>
 				<div class="prose prose-lg text-gray-500 mx-auto">
 					<ul>
-						<li><span class="font-bold">Location</span>: {{post.post.location}}</li>
-						<!-- <li><span class="font-bold">Country</span>: <span v-for="country in mountain.countries" :key="country">{{country}}</span></li> -->
+						<li><span class="font-bold">Location</span>: {{post.location}}</li>
 					</ul>
 					<p class="text-xl mb-10">
-						{{post.post.postText}}
+						{{post.postText}}
 					</p>
 					<Comments />
 				</div>
@@ -57,30 +56,34 @@ import Comments from '../components/Comments.vue'
 	export default {
 		name: 'ChallengePage',
 		components: { Comments },
-		// data() {
-		// 	return {
-		// 		// post: {},
-		// 		error: "",
-		// 	}
-		// },
-		async asyncData( {params, store}) {
-			
+		data() {
+			return {
+				post: {},
+				error: "",
+				postId: "",
+			}
+		},
+		async fetch() {
+			// console.log(this.$store.state.sessionId, this.$route.params.challenge)
 			const bodyData = {
-				"sessionId" : store.state.sessionId,
-				"postId" : params.challenge,
+				"sessionId" : this.$store.state.sessionId,
+				"postId" : this.$route.params.challenge,
 			}
 			// console.log(bodyData)
-			const post = await fetch('http://localhost:8080/get_post_by_id', {
+			 this.post = await fetch('http://localhost:8080/get_post_by_id', {
 				// headers: {
 				//     "Content-Type": "application/json",
 				// },
 				method: 'POST',
 				body: JSON.stringify(bodyData)
 				}).then((response) => response.json())
-				// .catch((error) => {
-				// 	this.error = error;
-				// });
-			return { post }
+			
+			if (this.post.message) {
+				alert(this.post.message)
+				this.$router.replace({ path: '/login' });
+			}
+			this.post = this.post.post
+			// console.log(this.post)
 		},
 	}
 </script>

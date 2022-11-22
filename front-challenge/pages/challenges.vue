@@ -6,21 +6,21 @@
             class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
             @click="showData"
         >
-            Show Data
+            Show Posts
         </button>
         <button
             v-if="show"
             class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
             @click="showData"
         >
-            Hide Data
+            Hide Posts
         </button>
         <button  
             class="text-sm bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-2 rounded-full mb-4" 
             type="button" 
             @click="showModal = true"
         >
-            Toggle modal
+            Create Post
         </button>
         <PopupCreateCh v-show="showModal" @close-modal="showModal = false"/>
         <LazyItemsChallenge v-if="show"/>
@@ -42,7 +42,7 @@ export default {
                 alert("Session expired")
                 this.$router.replace({ path: '/login' });
             } else {
-                console.log(this.$store.state.sessionId)
+                // console.log(this.$store.state.sessionId)
                 this.show = !this.show
             }
         }

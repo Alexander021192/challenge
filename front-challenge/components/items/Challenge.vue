@@ -14,7 +14,7 @@
 		<div 
 			v-for="post in posts.posts" 
 			v-else
-			:key="post.title"
+			:key="post.id"
 			class="item md:flex"
 		>
 			<div class="md:flex-shrink-0">
@@ -67,7 +67,7 @@ export default {
 			}).then((response) => response.json())
 			.catch((error) => {
 				this.error = error;
-		});
+			});
 	},
 	
 }

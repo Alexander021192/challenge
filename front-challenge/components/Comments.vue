@@ -8,13 +8,13 @@
         <div class="flex-col w-full py-4 mx-auto mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3">
             <div class="py-2 px-4 bg-white rounded-t-lg dark:bg-gray-800">
                 <label for="comment" class="sr-only">Your comment</label>
-                <textarea v-model="commentMsg" id="comment" rows="2" class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required=""></textarea>
+                <textarea id="comment" v-model="commentMsg" rows="2" class="px-0 w-full text-sm text-gray-900 bg-white border-0 dark:bg-gray-800 focus:ring-0 dark:text-white dark:placeholder-gray-400" placeholder="Write a comment..." required=""></textarea>
                 <img v-if="imageUrl" class="mx-auto w-50 h-40 rounded-lg" :src="imageUrl">
             </div>
             <div class="flex justify-between items-center py-2 px-3 border-t dark:border-gray-600">
                 <!-- type="submit" -->
                 <button
-                    type="submit" 
+                    type="button"
                     class="inline-flex items-center py-2.5 px-4 text-xs font-medium text-center text-white bg-blue-700 rounded-lg focus:ring-4 focus:ring-blue-200 dark:focus:ring-blue-900 hover:bg-blue-800"
                     @click="postComment"
                 >
@@ -30,7 +30,7 @@
                         class="inline-flex justify-center p-2 text-gray-500 rounded cursor-pointer hover:text-gray-900 hover:bg-gray-100 dark:text-gray-400 dark:hover:text-white dark:hover:bg-gray-600"
                         @click="$refs.uploadImage.click()"
                     >
-                        <input id="uploadImage" type="file" @change="fileSelected" ref="uploadImage" hidden>
+                        <input id="uploadImage" ref="uploadImage" type="file" hidden @change="fileSelected">
                         <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M4 3a2 2 0 00-2 2v10a2 2 0 002 2h12a2 2 0 002-2V5a2 2 0 00-2-2H4zm12 12H4l4-8 3 6 2-4 3 6z" clip-rule="evenodd"></path></svg>
                         <span class="sr-only">Upload image</span>
                     </button>
@@ -45,7 +45,7 @@
         <div
             v-for="comment in comments.comments"
 			v-else
-            :key="comment.comment"
+            :key="comment.id"
             class="flex-col w-full py-4 mx-auto mt-3 bg-white border-b-2 border-r-2 border-gray-200 sm:px-4 sm:py-4 md:px-4 sm:rounded-lg sm:shadow-sm md:w-2/3"
 		>
             <div class="flex flex-row">
@@ -74,13 +74,6 @@
 
 </template>
 
-<style scoped>
-textarea:focus
-{
-  outline: none;
-}
-</style>
-
 <script>
 import moment from 'moment'
 export default {
@@ -94,8 +87,8 @@ export default {
         },
 	async fetch() {
 		const bodyData = {
-			// "sessionId" : this.$store.state.sessionId
-			"sessionId" : "sessionTest"
+			"sessionId" : this.$store.state.sessionId
+			// "sessionId" : "sessionTest"
 		}
         this.comments = await fetch('http://localhost:8080/get_comments', {
 			method: 'POST',
@@ -146,11 +139,12 @@ export default {
             body: JSON.stringify(bodyData)
             }).then((response) => response.json())
             .then((data) => {
+                // console.log(data)
+                this.commentMsg = ""
+                this.$fetch()
                 if (data.message) {
                     alert(data.message)
                     this.$router.replace({ path: '/login' });
-                } else {
-                   alert("Comment create success")
                 }
             })
             .catch((error) => {
@@ -163,3 +157,10 @@ export default {
     }
 }
 </script>
+
+<style scoped>
+.textarea:focus
+{
+  outline: none;
+}
+</style>
